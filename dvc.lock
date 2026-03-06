@@ -1,0 +1,77 @@
+schema: '2.0'
+stages:
+  preprocessing:
+    cmd: python src/preprocessing.py
+    deps:
+    - path: data/processed/ingested_data.csv
+      hash: md5
+      md5: 7f07de26b054de4c36eed95a1277fe21
+      size: 978285
+    - path: src/preprocessing.py
+      hash: md5
+      md5: 4a65a8df4293cf053d4011dfe21eeb40
+      size: 2005
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: f7ee0a6b9603c05209de2d032655fd56
+      size: 298465
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 156602135697a2240e25d68bfeb972c4
+      size: 1190704
+    - path: models/feature_columns.json
+      hash: md5
+      md5: 396024d0a94477e2b48553cea7d37b20
+      size: 758
+    - path: models/scaler.pkl
+      hash: md5
+      md5: e49e79fcf4040cd8caea274bb1cfd943
+      size: 959
+  training:
+    cmd: python src/train.py
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 156602135697a2240e25d68bfeb972c4
+      size: 1190704
+    - path: src/train.py
+      hash: md5
+      md5: 207a2671db058dbfbc030b5d9d96fd2e
+      size: 2540
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 38230091148e381cf81cc94d2ae5cc49
+      size: 2131
+  evaluation:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: f7ee0a6b9603c05209de2d032655fd56
+      size: 298465
+    - path: models/model.pkl
+      hash: md5
+      md5: 38230091148e381cf81cc94d2ae5cc49
+      size: 2131
+    - path: src/evaluate.py
+      hash: md5
+      md5: 281276c2678015c77015757fc85a9a04
+      size: 1935
+  data_ingestion:
+    cmd: python src/data_ingestion.py
+    deps:
+    - path: data/raw/telco_customer_churn_data.csv
+      hash: md5
+      md5: 0f9de68e012bd3aed5fa7cdc9fc421af
+      size: 977501
+    - path: src/data_ingestion.py
+      hash: md5
+      md5: d50c23c944a60b2f1755d541488c9834
+      size: 889
+    outs:
+    - path: data/processed/ingested_data.csv
+      hash: md5
+      md5: 7f07de26b054de4c36eed95a1277fe21
+      size: 978285
